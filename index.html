@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Validation</title>
+</head>
+<body>
+  <h2>Email Validation Result</h2>
+  <input type="text" id="mail">
+  <button id="submit" onclick="check()">Check</button>
+  <div id="result"></div>
+
+  <script>
+    const apiKey = "HM4536yONfw38DmwgRJuqMfBlpTjNJtf";
+    function check(){
+
+    const email = document.getElementById("mail").value;
+    console.log(email);
+    const url = `https://api.apilayer.com/email_verification/check?email=${email}`;
+    
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "apikey": apiKey
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const resultDiv = document.getElementById("result");
+      let output = `Email: ${data.email}\n`;
+      output += data.format_valid ? "✅ Format: Valid\n" : "❌ Format: Invalid\n";
+      output += data.smtp_check ? "✅ Deliverable: Yes\n" : "❌ Deliverable: No\n";
+
+      resultDiv.innerText = output;
+      console.log(data); // Full JSON response
+    })
+    .catch(error => console.error("Error:", error));
+}
+  </script>
+</body>
+</html>
